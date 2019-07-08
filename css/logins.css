@@ -1,0 +1,23 @@
+.font-all{
+    font-family: 'Athiti', sans-serif;
+}
+
+.pointer {cursor: pointer;}
+.custom { width: 10px !important;}
+
+
+.Fomrs-background {
+	border-radius: 1em;
+    background: #a29bfe;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+
+    padding : 100px 350px 100px 350px; 
+    margin : 100px;
+}
+
+.Fomrs-login{
+    padding : 10px 10px 10px 10px;
+}

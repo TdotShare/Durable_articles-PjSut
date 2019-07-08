@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous" />
+
+
+    <link rel="stylesheet" type="text/css" href="css/indexs.css" />
+
+
+    <link href="https://fonts.googleapis.com/css?family=Athiti" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<body class="font-all" style="background-color:#5f27cd;">
+
+    <div id="vueIndex">
+        <div class="Fomrs-background">
+
+            <div class="row">
+                <div class="col">
+                    <h3 align="center">ตรวจสอบครุภัณฑ์</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col" align="center">
+                    <img src="image/logo.png" class="pointer" height="200" width="200">
+                </div>
+            </div>
+
+
+            <br>
+
+            <div class="row">
+                <div class="col" align="center">
+                    <img src="image/search.png" class="pointer" height="75" width="75" @click="SetShowUi('ShowModelSearchItem')">
+                </div>
+                <div class="col" align="center">
+                    <img src="image/notepad.png" class="pointer" height="75" width="75" @click="SetShowUi('ShowModelCheckItem')">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col" align="center">
+                    <p>ค้นหาครุภัณฑ์</p>
+                </div>
+                <div class="col" align="center">
+                    <p>ตรวจสอบความถูกต้องของครุภัณฑ์</p>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <div v-if="setname === 'ModelDetailKharu'">
+
+                <input type="text" class="form-control" id="id" readonly>
+            </div>
+
+
+
+            <div v-if="setname === 'ShowModelSearchItem'">
+
+                <div class="row">
+                    <div class="col" align="center">
+                        <h3>ค้นหาครุภัณฑ์</h3>
+                    </div>
+                </div>
+
+                <table class="table table-striped table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">ค้นหารหัสครุภัณฑ์</th>
+                            <th scope="col">ประเภท</th>
+                            <th scope="col">ค้นหาวันที่บันทึก</th>
+                            <th scope="col"></th>
+                            <th scope="col">ค้นหาผู้รับผิดชอบ</th>
+                            <th scope="col"></th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(1)" id="lifeScanIdkharu"></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(1)" id="lifeScanAssetType"></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(1)" id="lifeScanDate"></td>
+                            <td></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(1)" id="lifeScanCaretaker"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="col">ลำดับ</th>
+                            <th scope="col">รหัสครุภัณฑ์</th>
+                            <th scope="col">ประเภท</th>
+                            <th scope="col">วันที่บันทึก</th>
+                            <th scope="col">รูปภาพ</th>
+                            <th scope="col">ผู้รับผิดชอบ</th>
+                            <th scope="col">รายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(ptk , index) in ItemKharu">
+                            <th scope="row">{{index + 1}}</th>
+                            <td>{{ptk.id_kharu}}</td>
+                            <td>{{ptk.asset_type}}</td>
+                            <td>{{ptk.date_start}}</td>
+                            <td><img v-bind:src="'uploads/'+ ptk.image" width="75px" height="75px"></td>
+                            <td>{{ptk.caretaker}}</td>
+                            <td><button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+                                    data-target="#Kharu" @click="SetViewModelKharu(ptk)">ดูข้อมูล</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div v-if="setname === 'ShowModelCheckItem'">
+                <div class="row">
+                    <div class="col" align="center">
+                        <h3>ตรวจสอบความถูกต้องของครุภัณฑ์</h3>
+                    </div>
+                </div>
+
+                <table class="table table-striped table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">ค้นหารหัสครุภัณฑ์</th>
+                            <th scope="col">ประเภท</th>
+                            <th scope="col">ค้นหาวันที่บันทึก</th>
+                            <th scope="col"></th>
+                            <th scope="col">ค้นหาผู้บันทึก</th>
+                            <th scope="col">ค้นหาผู้รับผิดชอบ</th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(2)" id="TempScanIdkharu"></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(2)" id="TempScanAssetType"></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(2)" id="TempScanDate"></td>
+                            <td></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(2)" id="TempScanSave"></td>
+                            <td><input type="text" class="form-control" @change="ScanFindItem(2)" id="TempScanCaretaker"></td>
+                        </tr>
+                        <tr>
+                            <th scope="col">ลำดับ</th>
+                            <th scope="col">รหัสครุภัณฑ์</th>
+                            <th scope="col">ประเภท</th>
+                            <th scope="col">วันที่บันทึก</th>
+                            <th scope="col">รูปภาพ</th>
+                            <th scope="col">ผู้บันทึก</th>
+                            <th scope="col">ดูลายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(Temptk , index) in TempItemKharu">
+                            <th scope="row">{{index + 1}}</th>
+                            <td>{{Temptk.id_kharu}}</td>
+                            <td>{{Temptk.asset_type}}</td>
+                            <td>{{Temptk.date_start}}</td>
+                            <td><img v-bind:src="'uploads/'+ Temptk.image" width="75px" height="75px"></td>
+                            <td><input type="text" v-bind:id="'account_number' + index" class="form-control" :value="Temptk.account_number"
+                                    readonly></td>
+                            <td>{{Temptk.caretaker}}</td>
+                            <td><button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+                                    data-target="#ModalEditKharu" @click="SetShowModelKharu(Temptk , index )">ดูข้อมูล</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="Kharu" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ดูรายละเอียดครุภัณฑ์</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>รุ่น</label>
+                                <input type="text" class="form-control" id="brandShow">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>เลข serial</label>
+                                <input type="text" class="form-control" id="serial_numberShow">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>วันที่บันทึก</label>
+                                <input type="text" class="form-control" id="date_startShow">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>ราคา</label>
+                                <input type="text" class="form-control" id="priceShow">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>หมายเลขออเดอร์ / ใบสั้งซื้อ</label>
+                                <input type="text" class="form-control" id="order_numberShow">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>ห้องที่เก็บครุภัณฑ์</label>
+                                <input type="text" class="form-control" id="roomShow">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>สถานะ</label>
+                                <input type="text" class="form-control" id="statusShow">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>หมายเหตุ</label>
+                                <input type="text" class="form-control" id="noteShow">
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalEditKharu" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขรายละเอียดครุภัณฑ์</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>รหัสครุภัณฑ์</label>
+                                <input type="text" class="form-control" id="idkharuEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>ประเภทของครุภัณฑ์</label>
+                                <input type="text" class="form-control" id="asset_typeEdit">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>รุ่น</label>
+                                <input type="text" class="form-control" id="brandEdit">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>เลข serial</label>
+                                <input type="text" class="form-control" id="serial_numberEdit">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label>วันที่บันทึก</label>
+                                <input type="text" class="form-control" id="date_startEdit" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>ราคา</label>
+                                <input type="text" class="form-control" id="priceEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>หมายเลขออเดอร์ / ใบสั้งซื้อ</label>
+                                <input type="text" class="form-control" id="order_numberEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>ห้องที่เก็บครุภัณฑ์</label>
+                                <input type="text" class="form-control" id="roomEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>สถานะ</label>
+                                <input type="text" class="form-control" id="statusEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>หมายเหตุ</label>
+                                <input type="text" class="form-control" id="noteEdit">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>temp</label>
+                                <input type="text" class="form-control" id="tempEdit">
+                            </div>
+                            <div class="form-group col-md">
+                                <label>ผู้รับผิดชอบ</label>
+                                <input type="text" class="form-control" id="CaretakerEdit">
+                            </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="EditKharu()">แก้ไขข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+
+<script src="js/vueindex.js"></script>
+
+</html>
